@@ -2,13 +2,14 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { OverlayContainer } from '@angular/cdk/overlay';
 
+
 @Component({
   selector: 'app-sidenav',
   templateUrl: './sidenav.component.html',
   styleUrls: ['./sidenav.component.scss'],
 })
 export class SidenavComponent implements OnInit {
-  themeColor: 'primary' | 'accent' | 'warn' = 'primary'; 
+  themeColor: 'primary' | 'accent'  = 'primary'; 
   isDark = false; 
   constructor(private overlayContainer: OverlayContainer) {}
 

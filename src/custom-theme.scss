@@ -1,34 +1,28 @@
 
-
-// ? Importando `Work Sans` 
 @import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500&display=swap");
 
-// ? 1. Tema Default
+//  1. Tema Default-light-theme
 $theming-material-components-primary: mat-palette($mat-indigo);
 $theming-material-components-accent: mat-palette($mat-pink, A200, A100, A400);
-$theming-material-components-warn: mat-palette($mat-red);
 
 $theming-material-components-theme: mat-light-theme(
   $theming-material-components-primary,
-  $theming-material-components-accent,
-  $theming-material-components-warn
+  $theming-material-components-accent
 );
 
-// ? 2. Tema Secundário.
-$dark-primary: mat-palette($mat-blue-grey);
+//  2. Tema Secundário-dark-theme
+$dark-primary: mat-palette($mat-grey);
 $dark-accent: mat-palette($mat-amber, A200, A100, A400);
-$dark-warn: mat-palette($mat-deep-orange);
 $dark-theme: mat-dark-theme(
   (
     color: (
       primary: $dark-primary,
-      accent: $dark-accent,
-      warn: $dark-warn,
+      accent: $dark-accent
     ),
   )
 );
 
-// ? 3. Define tipografia de titulo
+//  3. Define tipografia de titulo
 $heading-font-family: "'Work Sans', sans-serif";
 $typography: mat-typography-config(
   $display-4: mat-typography-level(112px, $font-family: $heading-font-family),
