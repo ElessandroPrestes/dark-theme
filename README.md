@@ -8,13 +8,20 @@ Tem por finalidade o desenvolvimento de um esqueleto UI dark-theme.
 
 Abra seu terminal e digite os comandos :
 
-1 - git clone git@github.com:ElessandroPrestes/dark-theme.git
-2 - cd dark-theme
-2 - npm install
-3 - ng update
-4 - npm update
-5 - ng serve --o
-6 - Navegue para http://localhost:4200/. O aplicativo será recarregado automaticamente se você alterar qualquer um dos arquivos de origem.
+`git clone git@github.com:ElessandroPrestes/dark-theme.git` 
+
+`cd dark-theme` 
+
+`npm install` 
+
+`ng update` 
+
+`npm update` 
+
+`ng serve --o` 
+
+Navegue para http://localhost:4200/.  
+O aplicativo será recarregado automaticamente se você alterar qualquer um dos arquivos de origem.
 
 ## Construído com 
 
