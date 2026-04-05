@@ -1,0 +1,22 @@
+@defer (on viewport) {
+  <mat-card [class.mat-elevation-z8]="elevated()">
+    @if (title()) {
+      <mat-card-header>
+        <mat-card-title>{{ title() }}</mat-card-title>
+      </mat-card-header>
+    }
+    <mat-card-content>
+      <ng-content />
+    </mat-card-content>
+    <mat-card-actions>
+      <ng-content select="[actions]" />
+    </mat-card-actions>
+  </mat-card>
+} @placeholder {
+  <div class="card-skeleton" aria-hidden="true">
+    <div class="card-skeleton__header"></div>
+    <div class="card-skeleton__line card-skeleton__line--wide"></div>
+    <div class="card-skeleton__line"></div>
+    <div class="card-skeleton__line card-skeleton__line--short"></div>
+  </div>
+}

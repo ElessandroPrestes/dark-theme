@@ -1,0 +1,66 @@
+mat-card {
+  background-color: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-4);
+}
+
+// Skeleton de carregamento — visível apenas no placeholder do @defer
+.card-skeleton {
+  background-color: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  margin-bottom: var(--space-4);
+
+  &__header {
+    height: 20px;
+    width: 60%;
+    border-radius: var(--radius-sm);
+    margin-bottom: var(--space-4);
+    @include skeleton-shimmer;
+  }
+
+  &__line {
+    height: 14px;
+    border-radius: var(--radius-sm);
+    margin-bottom: var(--space-3);
+    @include skeleton-shimmer;
+
+    &--wide {
+      width: 100%;
+    }
+
+    &--short {
+      width: 40%;
+    }
+
+    // largura padrão
+    width: 80%;
+  }
+}
+
+@mixin skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--surface-2) 25%,
+    var(--surface-3) 50%,
+    var(--surface-2) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    background: var(--surface-3);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
