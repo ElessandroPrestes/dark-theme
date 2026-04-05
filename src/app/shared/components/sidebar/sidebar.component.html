@@ -1,0 +1,23 @@
+<nav
+  role="navigation"
+  aria-label="Navegação principal"
+  class="sidebar"
+  [class.sidebar--collapsed]="collapsed()"
+>
+  <mat-nav-list>
+    @for (item of navItems; track item.route) {
+      <a
+        mat-list-item
+        [routerLink]="item.route"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: item.route === '/' }"
+        [attr.aria-label]="item.label"
+      >
+        <mat-icon matListItemIcon aria-hidden="true">{{ item.icon }}</mat-icon>
+        @if (!collapsed()) {
+          <span matListItemTitle>{{ item.label }}</span>
+        }
+      </a>
+    }
+  </mat-nav-list>
+</nav>
