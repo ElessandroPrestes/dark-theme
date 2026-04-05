@@ -1,32 +1,30 @@
-// Custom Theming for Angular Material
+// ── Estilos Globais ───────────────────────────────────────────────────────────
+// Importa tokens, temas e integração com Angular Material.
+// CSS custom properties permitem alternância de tema via data-theme em runtime.
 
-// For more information: https://material.angular.io/guide/theming
+@use './styles/themes/dark' as *;
+@use './styles/themes/light' as *;
+@use './styles/tokens' as *;
+@use './styles/material-theme';
 
-@import "~@angular/material/theming";
-
-@include mat-core();
-
-// importa tema personalizado                
-@import "./custom-theme.scss";                   
-                                          
-// importa tema de componente personalizado         
-@import "./custom-component-themes.scss"; 
-
-@include angular-material-theme($theming-material-components-theme);  
-@include custom-components-theme($theming-material-components-theme); 
-
-.dark-theme {
-  @include angular-material-color($dark-theme);
+// Respeita preferência do sistema por movimento reduzido
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
 }
-
-
-@include angular-material-typography($typography);
 
 html,
 body {
   height: 100%;
 }
+
 body {
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: var(--font-sans);
+  background-color: var(--surface-1);
+  color: var(--text-primary);
 }

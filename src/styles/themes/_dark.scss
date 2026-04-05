@@ -1,0 +1,30 @@
+// ── Paleta escura — aplicada em :root e [data-theme="dark"] ──────────────────
+// Padrão da aplicação: fundo escuro com texto claro.
+
+:root,
+[data-theme='dark'] {
+  // Superfícies — 3 níveis com contraste crescente
+  --surface-1: #121212;
+  --surface-2: #1e1e1e;
+  --surface-3: #2c2c2c;
+
+  // Bordas
+  --border: rgba(255, 255, 255, 0.12);
+  --border-subtle: rgba(255, 255, 255, 0.06);
+
+  // Texto — 3 níveis de ênfase
+  --text-primary: rgba(255, 255, 255, 0.87);
+  --text-secondary: rgba(255, 255, 255, 0.6);
+  --text-disabled: rgba(255, 255, 255, 0.38);
+
+  // Cor de acento e variantes
+  --color-accent: #1a73e8;
+  --color-accent-dark: #1557b0;
+  --color-accent-hover: #2481f0;
+
+  // Cores semânticas
+  --color-success: #4caf50;
+  --color-warning: #ff9800;
+  --color-danger: #f44336;
+  --color-info: #2196f3;
+}
