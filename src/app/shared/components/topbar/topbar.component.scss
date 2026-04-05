@@ -1,0 +1,11 @@
+.topbar {
+  &__title {
+    font-size: var(--text-lg);
+    font-weight: 500;
+    margin-left: var(--space-2);
+  }
+
+  &__spacer {
+    flex: 1;
+  }
+}
