@@ -1,0 +1,59 @@
+// ── Animacoes e transicoes ───────────────────────────────────────────────────
+// Keyframes base e mixin para transicao suave entre temas.
+
+// Transicao de tema — aplicar em elementos que mudam de cor
+@mixin theme-transition(
+  $properties: (
+    background-color,
+    color,
+  )
+) {
+  $transitions: ();
+  @each $prop in $properties {
+    $transitions: append($transitions, #{$prop} var(--theme-transition), comma);
+  }
+  transition: $transitions;
+}
+
+// Fade-in com translate para cima — entrada de elementos
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Fade-in simples
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+// Mixin de entrada staggered — usar com animation-delay incremental
+@mixin stagger-enter($duration: 400ms, $delay: 0ms) {
+  animation: fade-in-up $duration ease-out #{$delay} both;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+// Shimmer para skeletons
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}

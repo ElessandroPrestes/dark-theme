@@ -1,0 +1,55 @@
+// ── Definicoes M3 — Angular Material Theming ─────────────────────────────────
+// Paleta azure (primaria) + violet (terciaria) com tipografia Sora / DM Sans.
+// O tema escuro e aplicado como padrao; o claro e ativado via seletor no body.
+
+@use '@angular/material' as mat;
+
+@include mat.core();
+
+// ── Tema escuro (padrao) ─────────────────────────────────────────────────────
+$dark-theme: mat.define-theme(
+  (
+    color: (
+      theme-type: dark,
+      primary: mat.$azure-palette,
+      tertiary: mat.$violet-palette,
+    ),
+    typography: (
+      brand-family: 'Sora, sans-serif',
+      plain-family: 'DM Sans, sans-serif',
+    ),
+    density: (
+      scale: 0,
+    ),
+  )
+);
+
+// ── Tema claro ───────────────────────────────────────────────────────────────
+$light-theme: mat.define-theme(
+  (
+    color: (
+      theme-type: light,
+      primary: mat.$azure-palette,
+      tertiary: mat.$violet-palette,
+    ),
+    typography: (
+      brand-family: 'Sora, sans-serif',
+      plain-family: 'DM Sans, sans-serif',
+    ),
+    density: (
+      scale: 0,
+    ),
+  )
+);
+
+// Aplica tema escuro como padrao global
+html {
+  @include mat.all-component-themes($dark-theme);
+  @include mat.typography-hierarchy($dark-theme);
+}
+
+// Sobrescreve com tema claro
+[data-theme='light'],
+.light-theme {
+  @include mat.all-component-colors($light-theme);
+}

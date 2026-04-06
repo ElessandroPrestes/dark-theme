@@ -1,9 +1,12 @@
-// ── Tokens Globais — independentes de tema ────────────────────────────────────
-// CSS custom properties resolvidas em runtime, permitindo alternância de tema
-// sem recarregar stylesheet.
+// ── Design Tokens — CSS Custom Properties ────────────────────────────────────
+// Tokens globais (independentes de tema) + tokens de cor por tema.
+// Alternancia de tema via data-theme attribute OU classe no body.
 
+// ═══════════════════════════════════════════════════════════════════════════════
+// Tokens globais — independentes de tema
+// ═══════════════════════════════════════════════════════════════════════════════
 :root {
-  // Espaçamento — múltiplos de 4px
+  // Espacamento — multiplos de 4px
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -22,33 +25,104 @@
   --radius-xl: 24px;
   --radius-full: 9999px;
 
-  // Tipografia — famílias
-  --font-sans: 'Roboto', 'Helvetica Neue', sans-serif;
-  --font-mono: 'Roboto Mono', 'Courier New', monospace;
+  // Tipografia — familias
+  --font-sans: 'DM Sans', 'Helvetica Neue', sans-serif;
+  --font-display: 'Sora', 'DM Sans', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
 
   // Tipografia — tamanhos
-  --text-xs: 0.75rem; // 12px
-  --text-sm: 0.875rem; // 14px
-  --text-base: 1rem; // 16px
-  --text-lg: 1.125rem; // 18px
-  --text-xl: 1.25rem; // 20px
-  --text-2xl: 1.5rem; // 24px
-  --text-3xl: 1.875rem; // 30px
-  --text-4xl: 2.25rem; // 36px
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
 
   // Tipografia — alturas de linha
   --leading-tight: 1.25;
   --leading-normal: 1.5;
   --leading-relaxed: 1.75;
 
-  // Sombras
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.5);
-  --shadow-glow: 0 0 20px var(--color-accent);
+  // Transicao global de tema
+  --theme-transition: 250ms cubic-bezier(0.4, 0, 0.2, 1);
 
-  // Transições — 3 velocidades
+  // Transicoes utilitarias
   --transition-fast: 150ms ease;
   --transition-base: 250ms ease;
   --transition-slow: 400ms ease;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// Paleta escura — padrao da aplicacao
+// ═══════════════════════════════════════════════════════════════════════════════
+:root,
+[data-theme='dark'],
+.dark-theme {
+  // Superficies
+  --surface-primary: #0f0f1a;
+  --surface-secondary: #1a1a2e;
+  --surface-elevated: #252540;
+  --surface-code: #1e1e32;
+
+  // Texto
+  --text-primary: #e8e8f0;
+  --text-secondary: #a0a0c0;
+  --text-muted: #6868a0;
+  --text-inverse: #0f0f1a;
+
+  // Bordas
+  --border-subtle: #2a2a48;
+  --border-strong: #3a3a58;
+
+  // Acentos
+  --accent-primary: #6d8aff;
+  --accent-primary-hover: #8da4ff;
+  --accent-success: #4caf50;
+  --accent-warning: #ff9800;
+  --accent-error: #f44336;
+  --accent-info: #2196f3;
+
+  // Sombras
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 20px var(--accent-primary);
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// Paleta clara
+// ═══════════════════════════════════════════════════════════════════════════════
+[data-theme='light'],
+.light-theme {
+  // Superficies
+  --surface-primary: #ffffff;
+  --surface-secondary: #f5f7fa;
+  --surface-elevated: #ffffff;
+  --surface-code: #f0f2f5;
+
+  // Texto
+  --text-primary: #1a1a2e;
+  --text-secondary: #4a4a6a;
+  --text-muted: #8888a0;
+  --text-inverse: #ffffff;
+
+  // Bordas
+  --border-subtle: #e2e5ea;
+  --border-strong: #c8ccd4;
+
+  // Acentos
+  --accent-primary: #3d5af1;
+  --accent-primary-hover: #2d4ae1;
+  --accent-success: #22c55e;
+  --accent-warning: #f59e0b;
+  --accent-error: #ef4444;
+  --accent-info: #1565c0;
+
+  // Sombras
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.12);
+  --shadow-glow: 0 0 20px var(--accent-primary);
 }

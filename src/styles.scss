@@ -1,13 +1,14 @@
 // ── Estilos Globais ───────────────────────────────────────────────────────────
-// Importa tokens, temas e integração com Angular Material.
-// CSS custom properties permitem alternância de tema via data-theme em runtime.
+// Importa reset, tokens, temas M3, tipografia e animacoes.
+// CSS custom properties permitem alternancia de tema em runtime.
 
-@use './styles/themes/dark' as *;
-@use './styles/themes/light' as *;
-@use './styles/tokens' as *;
-@use './styles/material-theme';
+@use './styles/reset';
+@use './styles/tokens';
+@use './styles/themes';
+@use './styles/typography';
+@use './styles/animations';
 
-// Respeita preferência do sistema por movimento reduzido
+// Respeita preferencia do sistema por movimento reduzido
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -23,8 +24,10 @@ body {
 }
 
 body {
-  margin: 0;
   font-family: var(--font-sans);
-  background-color: var(--surface-1);
+  background-color: var(--surface-primary);
   color: var(--text-primary);
+  transition:
+    background-color var(--theme-transition),
+    color var(--theme-transition);
 }

@@ -1,16 +1,16 @@
 @mixin skeleton-shimmer {
   background: linear-gradient(
     90deg,
-    var(--surface-2) 25%,
-    var(--surface-3) 50%,
-    var(--surface-2) 75%
+    var(--surface-secondary) 25%,
+    var(--surface-elevated) 50%,
+    var(--surface-secondary) 75%
   );
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
 
   @media (prefers-reduced-motion: reduce) {
     animation: none;
-    background: var(--surface-3);
+    background: var(--surface-elevated);
   }
 }
 
@@ -24,16 +24,16 @@
 }
 
 mat-card {
-  background-color: var(--surface-2);
-  border: 1px solid var(--border);
+  background-color: var(--surface-secondary);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
   margin-bottom: var(--space-4);
 }
 
-// Skeleton de carregamento — visível apenas no placeholder do @defer
+// Skeleton de carregamento — visivel apenas no placeholder do @defer
 .card-skeleton {
-  background-color: var(--surface-2);
-  border: 1px solid var(--border);
+  background-color: var(--surface-secondary);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
   padding: var(--space-4);
   margin-bottom: var(--space-4);
