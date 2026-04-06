@@ -1,0 +1,48 @@
+name: Deploy Preview
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+concurrency:
+  group: deploy-preview-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  deploy-preview:
+    name: Deploy de Preview
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Instalar dependências
+        run: npm ci --legacy-peer-deps
+
+      - name: Build de produção
+        run: npm run build
+
+      - name: Deploy no GitHub Pages (preview)
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist/dark-theme/browser
+
+      - name: Comentar URL de preview na PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prNumber = context.payload.pull_request.number;
+            const sha = context.sha.substring(0, 7);
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              body: `### Preview de Deploy\n\nBuild \`${sha}\` gerado com sucesso.\nArtefato disponível em **Actions > Artifacts** desta execução.`,
+            });
