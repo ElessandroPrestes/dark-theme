@@ -1,9 +1,4 @@
-<nav
-  role="navigation"
-  aria-label="Navegação principal"
-  class="sidebar"
-  [class.sidebar--collapsed]="collapsed()"
->
+<nav role="navigation" aria-label="Navegação principal" class="sidebar" [class.sidebar--collapsed]="collapsed()">
   <mat-nav-list>
     @for (item of navItems; track item.route) {
       <a
