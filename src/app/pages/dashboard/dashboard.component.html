@@ -1,0 +1,13 @@
+<main id="main-content">
+  <h1>Dashboard</h1>
+
+  @defer (on idle) {
+    <section class="dashboard__cards">
+      <app-card title="Resumo" />
+      <app-card title="Atividade" />
+      <app-card title="Métricas" />
+    </section>
+  } @placeholder {
+    <p aria-busy="true" aria-live="polite">Carregando painéis...</p>
+  }
+</main>
