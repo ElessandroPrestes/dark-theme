@@ -14,10 +14,15 @@ describe('ThemeService', () => {
   beforeEach(() => {
     localStorage.clear();
     document.documentElement.removeAttribute('data-theme');
+    document.documentElement.removeAttribute('data-theme-shift');
     mockMatchMedia(true);
 
     TestBed.configureTestingModule({});
     service = TestBed.inject(ThemeService);
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
   });
 
   describe('init()', () => {
@@ -75,6 +80,19 @@ describe('ThemeService', () => {
       service.init();
       service.toggle();
       expect(document.documentElement.getAttribute('data-theme')).toBe('light');
+    });
+
+    it('deve aplicar e remover a direção de transição ao alternar o tema', () => {
+      jest.useFakeTimers();
+      service.init();
+
+      service.toggle();
+
+      expect(document.documentElement.getAttribute('data-theme-shift')).toBe('sunrise');
+
+      jest.advanceTimersByTime(901);
+
+      expect(document.documentElement.hasAttribute('data-theme-shift')).toBe(false);
     });
   });
 

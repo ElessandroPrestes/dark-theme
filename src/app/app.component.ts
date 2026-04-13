@@ -1,5 +1,14 @@
-import { ChangeDetectionStrategy, Component, OnInit, inject, isDevMode } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  OnInit,
+  inject,
+  isDevMode,
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { filter, startWith } from 'rxjs';
 import { ThemeService } from './core/services/theme.service';
 
 @Component({
@@ -11,7 +20,8 @@ import { ThemeService } from './core/services/theme.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements OnInit {
-  readonly title = 'dark-theme';
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly router = inject(Router);
   private readonly themeService = inject(ThemeService);
 
   ngOnInit(): void {
@@ -24,12 +34,23 @@ export class AppComponent implements OnInit {
   private initAxe(): void {
     import('axe-core').then(({ default: axe }) => {
       axe.configure({ reporter: 'v2' });
-      axe.run(document, {}, (err, results) => {
-        if (err) return;
-        results.violations.forEach((v) =>
-          console.warn(`[axe] ${v.impact?.toUpperCase()} — ${v.description}`, v.nodes),
-        );
-      });
+
+      this.router.events
+        .pipe(
+          filter((event): event is NavigationEnd => event instanceof NavigationEnd),
+          startWith(null),
+          takeUntilDestroyed(this.destroyRef),
+        )
+        .subscribe(() => {
+          window.requestAnimationFrame(() => {
+            axe.run(document, {}, (err, results) => {
+              if (err) return;
+              results.violations.forEach((v) =>
+                console.warn(`[axe] ${v.impact?.toUpperCase()} — ${v.description}`, v.nodes),
+              );
+            });
+          });
+        });
     });
   }
 }
