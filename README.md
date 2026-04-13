@@ -1,6 +1,19 @@
 # Dark Theme
 
-Aplicacao Angular com suporte a tema escuro/claro, construida com Angular Material. Oferece alternancia dinamica de tema com persistencia em `localStorage` e deteccao automatica da preferencia do sistema operacional (`prefers-color-scheme`).
+Aplicacao Angular com tela de login responsiva, suporte a tema escuro/claro e transicao visual entre noite e dia. O projeto foi construido com Angular Material e prioriza UX/UI, acessibilidade e consistencia entre desktop e mobile.
+
+## O que foi desenvolvido
+
+- Tela unica de login com foco total na autenticacao
+- Seletor de tema com icones e feedback visual claro
+- Transicao `dark -> light` como amanhecer e `light -> dark` como anoitecer
+- Arte lateral em CSS no desktop, reagindo ao tema com lua no modo escuro e sol no modo claro
+- Layout mobile simplificado, exibindo apenas o formulario
+- Persistencia de tema em `localStorage`
+- Deteccao automatica da preferencia do sistema com `prefers-color-scheme`
+- Estados de foco, mensagens de validacao e feedback de sucesso para o formulario
+- Respeito a `prefers-reduced-motion`
+- Auditoria automatica de acessibilidade com `axe-core` em ambiente de desenvolvimento
 
 ## Stack
 
@@ -57,19 +70,55 @@ npm run docker:dev
 | `npm run docker:prod`| Build e execucao de producao     |
 | `npm run docker:clean` | Remover containers e volumes   |
 
+## Fluxo da interface
+
+### Desktop
+
+- Shell central com duas colunas
+- Formulario de login a esquerda
+- Painel artistico a direita, desenhado em CSS e sincronizado com o tema
+- Transicao de fundo e atmosfera visual durante a troca de tema
+
+### Mobile
+
+- Layout em coluna unica
+- Apenas o formulario permanece visivel
+- Painel visual e elementos secundarios sao ocultados para reduzir ruido
+- Espacamento e componentes ajustados para toque
+
+## Tema e usabilidade
+
+- O tema pode ser alternado manualmente pelo seletor no topo da tela
+- A troca entre os modos aplica transicao visual suave entre amanhecer e anoitecer
+- O estado selecionado e comunicado ao usuario por texto e alteracoes visuais no seletor
+- O sistema evita animacoes excessivas quando `prefers-reduced-motion` estiver ativo
+- O tema escolhido e mantido entre sessoes
+
 ## Estrutura do projeto
 
 ```
 src/app/
-  core/services/       # ThemeService (signals, localStorage, prefers-color-scheme)
-  shared/components/   # Sidebar, Topbar, Card
-  pages/               # Home, Dashboard, Settings (lazy-loaded)
+  core/services/       # ThemeService (signals, persistencia, transicao de tema)
+  pages/home/          # Tela de login standalone
+src/styles/
+  _home-login.scss     # Layout, arte visual e transicoes da tela de login
+  _tokens.scss         # Tokens de espaco, tipografia, cores e transicoes
+  _themes.scss         # Integracao dos temas com Angular Material
 docker/
   dev/                 # Dockerfile para desenvolvimento
   prod/                # Dockerfile multi-stage (Node + Nginx)
 .github/workflows/
   ci.yml               # Lint, testes, build Angular, build Docker
   deploy-preview.yml   # Deploy preview para PRs
+```
+
+## Validacao
+
+Comandos usados para validar o fluxo atual:
+
+```bash
+npm run build
+./node_modules/.bin/jest --runInBand --coverage=false src/app/pages/home/home.component.spec.ts src/app/core/services/theme.service.spec.ts
 ```
 
 ## Docker
@@ -102,7 +151,7 @@ O pipeline do GitHub Actions executa em push/PR para as branches `develop`, `dev
 
 ## Autor
 
-**Elessandro Prestes Macedo** — [LinkedIn](https://www.linkedin.com/in/elessandro-prestes-macedo-278189126/)
+**Elessandro Prestes Macedo** — [LinkedIn](https://www.linkedin.com/in/elessandro-prestes-macedo/)
 
 ## Licenca
 
