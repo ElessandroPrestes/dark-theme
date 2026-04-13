@@ -4,10 +4,20 @@ import { ThemeService } from './theme.service';
 describe('ThemeService', () => {
   let service: ThemeService;
 
-  const mockMatchMedia = (matches: boolean) => {
+  const mockMatchMedia = ({
+    prefersDark = true,
+    prefersReducedMotion = false,
+  }: {
+    prefersDark?: boolean;
+    prefersReducedMotion?: boolean;
+  } = {}) => {
     Object.defineProperty(window, 'matchMedia', {
       writable: true,
-      value: jest.fn().mockReturnValue({ matches, addEventListener: jest.fn() }),
+      value: jest.fn().mockImplementation((query: string) => ({
+        matches: query === '(prefers-color-scheme: dark)' ? prefersDark : prefersReducedMotion,
+        addEventListener: jest.fn(),
+        removeEventListener: jest.fn(),
+      })),
     });
   };
 
@@ -15,7 +25,9 @@ describe('ThemeService', () => {
     localStorage.clear();
     document.documentElement.removeAttribute('data-theme');
     document.documentElement.removeAttribute('data-theme-shift');
-    mockMatchMedia(true);
+    delete (document as Document & { startViewTransition?: (callback: () => void) => void })
+      .startViewTransition;
+    mockMatchMedia();
 
     TestBed.configureTestingModule({});
     service = TestBed.inject(ThemeService);
@@ -34,14 +46,14 @@ describe('ThemeService', () => {
     });
 
     it('deve usar prefers-color-scheme dark quando não há tema salvo', () => {
-      mockMatchMedia(true);
+      mockMatchMedia({ prefersDark: true });
       service.init();
       expect(service.isDark()).toBe(true);
       expect(document.documentElement.getAttribute('data-theme')).toBe('dark');
     });
 
     it('deve usar prefers-color-scheme light quando não há tema salvo', () => {
-      mockMatchMedia(false);
+      mockMatchMedia({ prefersDark: false });
       service.init();
       expect(service.isDark()).toBe(false);
       expect(document.documentElement.getAttribute('data-theme')).toBe('light');
@@ -49,7 +61,7 @@ describe('ThemeService', () => {
 
     it('deve preferir localStorage sobre prefers-color-scheme', () => {
       localStorage.setItem('theme', 'light');
-      mockMatchMedia(true);
+      mockMatchMedia({ prefersDark: true });
       service.init();
       expect(service.isDark()).toBe(false);
     });
@@ -94,6 +106,18 @@ describe('ThemeService', () => {
 
       expect(document.documentElement.hasAttribute('data-theme-shift')).toBe(false);
     });
+
+    it('deve limpar a transição anterior quando o tema muda novamente antes do timeout', () => {
+      jest.useFakeTimers();
+      const clearTimeoutSpy = jest.spyOn(window, 'clearTimeout');
+      service.init();
+
+      service.toggle();
+      service.toggle();
+
+      expect(clearTimeoutSpy).toHaveBeenCalled();
+      expect(document.documentElement.getAttribute('data-theme-shift')).toBe('sunset');
+    });
   });
 
   describe('cssClass()', () => {
@@ -106,6 +130,61 @@ describe('ThemeService', () => {
       localStorage.setItem('theme', 'light');
       service.init();
       expect(service.cssClass()).toBe('theme-light');
+    });
+  });
+
+  describe('setTheme()', () => {
+    it('não deve reaplicar o tema quando o valor informado já está ativo', () => {
+      const setItemSpy = jest.spyOn(Storage.prototype, 'setItem');
+      service.init();
+
+      service.setTheme('dark');
+
+      expect(setItemSpy).not.toHaveBeenCalled();
+      expect(document.documentElement.getAttribute('data-theme')).toBe('dark');
+    });
+
+    it('deve usar startViewTransition quando houver suporte e movimento permitido', () => {
+      const startViewTransition = jest.fn((callback: () => void) => callback());
+      (
+        document as Document & { startViewTransition?: (callback: () => void) => void }
+      ).startViewTransition = startViewTransition;
+      mockMatchMedia({ prefersDark: true, prefersReducedMotion: false });
+      service.init();
+
+      service.setTheme('light');
+
+      expect(startViewTransition).toHaveBeenCalledTimes(1);
+      expect(document.documentElement.getAttribute('data-theme')).toBe('light');
+    });
+
+    it('deve ignorar startViewTransition quando o usuário prefere reduzir movimento', () => {
+      const startViewTransition = jest.fn((callback: () => void) => callback());
+      (
+        document as Document & { startViewTransition?: (callback: () => void) => void }
+      ).startViewTransition = startViewTransition;
+      mockMatchMedia({ prefersDark: true, prefersReducedMotion: true });
+      service.init();
+
+      service.setTheme('light');
+
+      expect(startViewTransition).not.toHaveBeenCalled();
+      expect(document.documentElement.getAttribute('data-theme')).toBe('light');
+    });
+
+    it('deve tratar a aplicação animada sem tema anterior informado', () => {
+      (
+        service as unknown as {
+          apply: (
+            animate: boolean,
+            previousTheme?: 'dark' | 'light',
+            nextTheme?: 'dark' | 'light',
+          ) => void;
+        }
+      ).apply(true, undefined, 'light');
+
+      expect(document.documentElement.getAttribute('data-theme')).toBe('light');
+      expect(document.documentElement.hasAttribute('data-theme-shift')).toBe(false);
     });
   });
 });
